@@ -1,0 +1,73 @@
+
+
+<app-header></app-header>
+<div class="container"  *ngIf="Entry_View">
+    <div class="header">
+        <input class="form-control" type="text" placeholder="What do you want to Search ?" [(ngModel)]="filter" />
+        <br>
+    </div> 
+    <table class="table table-bordered table-stripped">
+        <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Patient Name</th>
+                <th>Diagonsis</th>
+                <th>View Medicine Prescribed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let presc of prescriptionData| filter:filter | paginate: {itemsPerPage:3, currentPage:page } ">
+                <!-- <td>{{ i+1 }}</td> -->
+                <td >{{presc.staffName}} </td>
+                <td >{{presc.patientName}} </td>
+                <td>{{presc.diagnosis}}</td>
+                 <td>
+                   <button (click)="view_test(presc.prescriptionId)"  class="btn btn-info" >View</button>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+
+<div>       
+        
+    <div class="row" *ngIf="Search_View">       
+        <table class="table table-bordered table-stripped">
+            <thead>
+                <tr>
+                    <th>Medicine Name</th>
+                    <th>Interval</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let medpre of Medicineprescription_Data">
+                    <!-- <td>{{ i+1 }}</td> -->
+                    <td >{{medpre.medicineName}} </td>
+                    <td >{{medpre.medicineIntervalName}} </td>
+                    <td >{{medpre.course}} </td>
+                    <td><button (click)="edit_med(medpre)"  class="btn btn-info">Generete Bill</button>&nbsp; </td>
+                </tr>
+            </tbody>
+        </table>
+            
+    
+            <div class="input-group mb-3" >
+            <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Quantity</span>
+            </div>            
+            <input type="text" name="medicineview.quantity" id="medicineview.quantity"  [(ngModel)]="medicineview.quantity"  class="form-control" placeholder="Enter quantity" aria-label="Course">
+            <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Medicine Amount</span>
+            </div>             
+            <input type="date" name="medicineview.medicineAmount" id="medicineview.medicineAmount"  [(ngModel)]="medicineview.medicineAmount"  class="form-control" placeholder="Enter Amount" aria-label="Course">
+            
+           <button (click)="Add_Test()"  class="btn btn-info" >ADD</button>
+        </div>   
+    
+        </div>
+    </div>

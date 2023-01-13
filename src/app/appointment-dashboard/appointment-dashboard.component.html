@@ -1,0 +1,70 @@
+
+
+
+<app-header></app-header>
+
+<div style="height: 30px;"></div>
+
+<div class="row pl-3">
+  <div class="col-lg-3 col-md-4 col-sm-3 pr-7">
+      <div class="card card-stats">
+          <div class="card-header card-header-warning card-header-icon">
+              <div class="card-icon" style="background:blue;">
+                <!-- content_copy -->
+                  <i class="material-icons" style="color: #ffff;">person_add_alt</i>
+              </div>
+              <p class="card-category"> Patient</p>
+              <h3 class="" >{{Dashboard_Count}}</h3>
+          </div>
+          <div class="card-footer">
+              <div class="stats">
+                  <!-- <i class="material-icons text-danger">warning</i> -->
+                  <button style=" background-color: blue;" mat-raised-button type="submit" class="btn pull-right btn-danger div-rspnsv-pstn-crct-sls-mstr"
+                  (click)="Click_No1()"> 
+                    <!-- {{Shipment_Master_.Porforma_Caption}} -->
+                    View
+                  </button>
+                  <!-- <h4 onclick="Get_Dashboard_Count(Login_User)">Get Details</h4> -->
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-lg-3 col-md-4 col-sm-3 pr-7">
+      <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon" style="background: blue;">
+                <!-- store -->
+            <i class="material-icons"  style="color: #ffff;">beenhere</i>
+              </div>
+              <p class="card-category"> Appointment List</p>
+              <h3 class="">{{Dashboard_Count1}}</h3>
+          </div>
+          <div class="card-footer">
+              <div class="stats">
+                  <!-- <i class="material-icons">date_range</i> Last 24 Hours -->
+                  <button style=" background-color: blue;" mat-raised-button type="submit" class="btn pull-right btn-danger div-rspnsv-pstn-crct-sls-mstr"
+                  (click)="Click_No2()" > View</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-lg-3 col-md-4 col-sm-3 pr-7">
+      <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon" style="background: blue;">
+                <!-- store -->
+            <i class="material-icons"  style="color: #ffff;">beenhere</i>
+              </div>
+              <p class="card-category"> Appointment Today</p>
+              <h3 class="">{{Dashboard_Count1}}</h3>
+          </div>
+          <div class="card-footer">
+              <div class="stats">
+                  <!-- <i class="material-icons">date_range</i> Last 24 Hours -->
+                  <button style=" background-color: blue;" mat-raised-button type="submit" class="btn pull-right btn-danger div-rspnsv-pstn-crct-sls-mstr"
+                  (click)="Click_No3()" > View</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div> 

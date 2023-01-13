@@ -1,0 +1,38 @@
+<app-header></app-header>
+<div class="container"  *ngIf="Entry_View">
+    <div class="header">
+        <input class="form-control" type="text" placeholder="What do you want to Search ?" [(ngModel)]="filter" />
+        <br>
+    </div> 
+    <table class="table table-bordered table-stripped">
+        <thead>
+            <tr>
+                <th>Token No</th>
+                <th>Patient Name</th>
+                <th>Appointment Date</th>
+                <th>Doctor</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appointment of Appointment_Data| filter:filter | paginate: {itemsPerPage:3, currentPage:page } ">
+                <!-- <td>{{ i+1 }}</td> -->
+                <td >{{appointment.tokenNo}} </td>
+                <td >{{appointment.patientName}} </td>
+                <td>{{appointment.appointmentDate | date: 'dd-MMM-yyyy'}}</td>
+                <td >{{appointment.doctorName}} </td>
+                <td >{{appointment.departmentName}} </td>
+                <td >
+                    <div [hidden]="appointment.status==0"><button (click)="view_click(appointment)"  class="btn btn-info" >VIEW</button>&nbsp;</div>
+                    <div [hidden]="appointment.status==1" ><button (click)="Edit_click(appointment.appointmentId)"  class="btn btn-info" >View Details</button>&nbsp;</div>
+                </td> 
+                 <td>
+                   <button (click)="History_click(appointment.appointmentId)"  class="btn btn-info" >History</button>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>

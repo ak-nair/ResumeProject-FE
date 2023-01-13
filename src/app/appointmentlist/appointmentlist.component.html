@@ -1,0 +1,299 @@
+
+<app-header></app-header>
+<div class="container"  *ngIf="Entry_View">
+    <div class="header">
+        <input class="form-control" type="text" placeholder="What do you want to Search ?" [(ngModel)]="filter" />
+        <br>
+    </div> 
+    <table class="table table-bordered table-stripped">
+        <thead>
+            <tr>
+                <th>Token No</th>
+                <th>Patient Name</th>
+                <th>Appointment Date</th>
+                <th>View</th>
+                <th>History</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appointment of Appointment_Data| filter:filter | paginate: {itemsPerPage:10, currentPage:page } ">
+                <!-- <td>{{ i+1 }}</td> -->
+                <td >{{appointment.tokenNo}} </td>
+                <td >{{appointment.patientName}} </td>
+                <td>{{appointment.appointmentDate | date: 'dd-MMM-yyyy'}}</td>
+                <td >
+                    <div [hidden]="appointment.status==0"><button (click)="view_click(appointment)"  class="btn btn-info" >VIEW</button>&nbsp;</div>
+                    <div [hidden]="appointment.status==1" ><button (click)="Edit_click(appointment.appointmentId)"  class="btn btn-info" >View Details</button>&nbsp;</div>
+                </td> 
+                 <td>
+                   <button (click)="History_click(appointment.patientId)"  class="btn btn-info" >History</button>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+<div class="row" *ngIf="Search_View">
+
+        <input type="hidden" name="prescriptionId" [(ngModel)]="prescription_.prescriptionId">          
+
+    <div class="input-group mb-3" [hidden]="diagonsis_view">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">Diagnosis</span>
+        </div>
+        <input type="text" name="diagnosis" id="diagnosis" [(ngModel)]="prescription_.diagnosis" 
+        #diagnosis="ngModel"
+        minlength="2" maxlength="40" required  pattern="[a-zA-Z0-9-]+" 
+         class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+         [ngClass]="{'is-invalid':diagnosis.touched && diagnosis.invalid}">
+         <div [hidden]="diagnosis.valid || diagnosis.pristine"  class="alert alert-danger">
+             <div [hidden]="!diagnosis.hasError('required')">Diagnosis is required</div>
+             <div [hidden]="!diagnosis.hasError('pattern')">Only Alphabet and Number is allowed</div>
+         </div>
+        <button (click)="save_prescription()" class="btn btn-primary" type="button">Save</button>
+    </div>
+
+    <div class="input-group mb-3" [hidden]="diagonsis_hide">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">Diagnosis</span>
+        </div>
+        <input type="text" readonly name="diagnosis" id="diagnosis" [(ngModel)]="prescription_.diagnosis" placeholder="Enter email" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+<!-- Mediidne -->
+
+<br>
+    <div>       
+        
+    <div class="input-group mb-3" >
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">Medicine</span>
+        </div>       
+        <select [(ngModel)]="medicine" name="medicine" required class="form-control p-0 pl-1"  >
+            <option *ngFor="let medicine1 of medicine_data "[ngValue]="medicine1">{{medicine1.medicineName}}</option>
+        </select>
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Medicine Interval</span>
+            </div>
+            <select [(ngModel)]="interval" name="interval" required class="form-control p-0 pl-1"  >
+               <option *ngFor="let interval1 of interval_data "[ngValue]="interval1">{{interval1.medicineIntervalName}}</option>
+           </select>
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Course</span>
+                </div>              
+                <input type="text" name="Medicineprescription_.course" id="Medicineprescription_.course"  [(ngModel)]="Medicineprescription_.course"  
+                #course="ngModel"
+        minlength="2" maxlength="40" required  pattern="[a-zA-Z 0-9-]+" 
+         class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+         [ngClass]="{'is-invalid':course.touched && course.invalid}">
+         <div [hidden]="course.valid || course.pristine"  class="alert alert-danger">
+             <div [hidden]="!course.hasError('required')">Course is required</div>
+             <div [hidden]="!course.hasError('pattern')">Only Alphabet and Number is allowed</div>
+         </div>
+                <button (click)="Add_Medicine()" class="btn btn-primary" type="submit">Genereate Medicine</button>
+    </div>   
+        <!-- <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">Medicine</span>
+            </div>           
+            <select [(ngModel)]="medicine" name="medicine" required class="form-control p-0 pl-1"  >
+                <option *ngFor="let medicine1 of medicine_data "[ngValue]="medicine1">{{medicine1.medicineName}}</option>
+            </select>
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">Medicine Interval</span>
+                </div>
+                <select [(ngModel)]="interval" name="interval" required class="form-control p-0 pl-1"  >
+                   <option *ngFor="let interval1 of interval_data "[ngValue]="interval1">{{interval1.medicineIntervalName}}</option>
+               </select>
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">Course</span>
+            </div>           
+            <input type="text" name="Medicineprescription_.course" id="Medicineprescription_.course"  [(ngModel)]="Medicineprescription_.course"  class="form-control" placeholder="First name" aria-label="First name">
+           
+                <div class="col">
+                    <button type="submit" (click)="Add_Medicine()" class="btn btn-lg btn-primary form-control"> Add Medicine</button>
+                </div>
+        </div> -->
+        <br>
+        <table class="table table-bordered table-stripped">
+            <thead>
+                <tr>
+                    <th>Medicine Name</th>
+                    <th>Interval</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let medpre of Medicineprescription_Data">
+                    <!-- <td>{{ i+1 }}</td> -->
+                    <td >{{medpre.medicineName}} </td>
+                    <td >{{medpre.medicineIntervalName}} </td>
+                    <td >{{medpre.course}} </td>
+                    <td><button (click)="edit_med(medpre)"  class="btn btn-info">Edit</button>&nbsp; </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <!-- lab -->
+    
+    <br>
+        <div>  
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Lab Test</span>
+                </div>
+                <select [(ngModel)]="test" name="test" required class="form-control p-0 pl-1"  >
+                   <option *ngFor="let test1 of test_data "[ngValue]="test1">{{test1.testName}}</option>
+               </select>
+                <button type="submit" (click)="Add_Lab()" class="btn btn-primary" type="button">Generate Test</button>
+            </div>  
+              <!-- <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Test</span>
+                </div>   
+                 <select [(ngModel)]="test" name="test" required class="form-control p-0 pl-1"  >
+                    <option *ngFor="let test1 of test_data "[ngValue]="test1">{{test1.testName}}</option>
+                </select>
+                    <div class="col">
+                        <button type="submit" (click)="Add_Lab()" class="btn btn-lg btn-primary form-control"> Add Medicine</button>
+                    </div>
+                </div> -->
+              <br>
+            <table class="table table-bordered table-stripped">
+                <thead>
+                    <tr>
+                        <th>Lab Test</th>
+                        <th><div [hidden]="Note_hidden">
+                            <button (click)="Add_Note()"  class="btn btn-info">Add Note</button>&nbsp;</div>
+                            </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let labpre of Testprescription_Data">
+                        <!-- <td>{{ i+1 }}</td> -->
+                        <td >{{labpre.testName}} </td>
+                        <td><button (click)="edit_lab(labpre)"  class="btn btn-info">Edit</button>&nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <button type="submit" (click)="close_click()" class="btn btn-lg btn-primary form-control"> Close</button>
+        </div>
+    <!-- </form> -->
+</div>
+
+<div class="container"  *ngIf="test_view">
+    <div class="header">
+        <input class="form-control" type="text" placeholder="What do you want to Search ?" [(ngModel)]="filter" />
+        <br>
+    </div> 
+    <table class="table table-bordered table-stripped">
+        <thead>
+            <tr>
+                <th>Token No</th>
+                <th>Patient Name</th>
+                <th>Appointment Date</th>
+                <th>View</th>
+                <th>History</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appointment of Appointment_Data| filter:filter | paginate: {itemsPerPage:3, currentPage:page } ">
+                <!-- <td>{{ i+1 }}</td> -->
+                <td >{{appointment.tokenNo}} </td>
+                <td >{{appointment.patientName}} </td>
+                <td>{{appointment.appointmentDate | date: 'dd-MMM-yyyy'}}</td>
+                <td >
+                    <div [hidden]="appointment.status==0"><button (click)="view_click(appointment)"  class="btn btn-info" >VIEW</button>&nbsp;</div>
+                    <div [hidden]="appointment.status==1" ><button (click)="Edit_click(appointment.appointmentId)"  class="btn btn-info" >View Details</button>&nbsp;</div>
+                </td> 
+                 <td>
+                   <button (click)="History_click(appointment.appointmentId)"  class="btn btn-info" >History</button>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+
+<div class="container"  *ngIf="history_view">
+    <div class="header">
+        <input class="form-control" type="text" placeholder="What do you want to Search ?" [(ngModel)]="filter" />
+        <br>
+    </div> 
+    <div>
+    <h3>{{patient_name}} History</h3>
+    <hr>
+    </div> 
+    <table class="table table-bordered table-stripped">
+        <thead>
+            <tr>
+                <th>Diagonsis</th>
+                <th>Medicine</th>
+                <th>Test</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appointment of Appointment_History_Data| filter:filter | paginate: {itemsPerPage:10, currentPage:page } ">
+                <!-- <td>{{ i+1 }}</td> -->
+                <td >{{appointment.diagnosis}} </td>
+                <td >{{appointment.medicineName}} </td>
+                <td >{{appointment.testName}} </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+
+<div class="row" *ngIf="note_view">
+
+<div class="input-group mb-3" >
+    <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Note Description</span>
+    </div>
+    <input type="text" name="noteDescription" id="noteDescription" [(ngModel)]="note.noteDescription" 
+    #noteDescription="ngModel"
+    minlength="2" maxlength="40" required  pattern="[a-zA-Z0-9-]+" 
+     class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+     [ngClass]="{'is-invalid':noteDescription.touched && noteDescription.invalid}">
+     <div [hidden]="noteDescription.valid || noteDescription.pristine"  class="alert alert-danger">
+         <div [hidden]="!noteDescription.hasError('required')">Note Description is required</div>
+         <div [hidden]="!noteDescription.hasError('pattern')">Only Alphabet and Number is allowed</div>
+     </div>
+</div>
+
+<div class="input-group mb-3" >
+    <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">Remarks</span>
+    </div>
+    <input type="text" name="remarks" id="remarks" [(ngModel)]="note.remarks" 
+    #remarks="ngModel"
+    minlength="2" maxlength="40" required  pattern="[a-zA-Z0-9-]+" 
+     class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
+     [ngClass]="{'is-invalid':remarks.touched && remarks.invalid}">
+     <div [hidden]="remarks.valid || remarks.pristine"  class="alert alert-danger">
+         <div [hidden]="!remarks.hasError('required')">Remarks is required</div>
+         <div [hidden]="!remarks.hasError('pattern')">Only Alphabet and Number is allowed</div>
+     </div>
+</div>
+
+    <div class="col">
+        <button type="submit" (click)="Save_Note()" class="btn btn-lg btn-primary form-control"> Save</button>
+        <button type="submit" (click)="close_click()" class="btn btn-lg btn-primary form-control"> Close</button>
+    </div>
+<!-- </form> -->
+</div>

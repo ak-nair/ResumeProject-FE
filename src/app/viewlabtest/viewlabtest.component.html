@@ -1,0 +1,86 @@
+
+
+<app-header></app-header>
+<div class="container"  *ngIf="Entry_View">
+    <div class="header">
+        <input class="form-control" type="text" placeholder="What do you want to Search ?" [(ngModel)]="filter" />
+        <br>
+    </div> 
+    <table class="table table-bordered table-stripped">
+        <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Patient Name</th>
+                <th>Diagonsis</th>
+                <th>View Lab Prescribed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let presc of prescriptionData| filter:filter | paginate: {itemsPerPage:10, currentPage:page } ">
+                <!-- <td>{{ i+1 }}</td> -->
+                <td >{{presc.staffName}} </td>
+                <td >{{presc.patientName}} </td>
+                <td>{{presc.diagnosis}}</td>
+                 <td>
+                   <button (click)="view_test(presc.prescriptionId)"  class="btn btn-info" >View</button>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+<div>       
+        
+<div class="row" *ngIf="Search_View">       
+        <table class="table table-bordered table-stripped">
+            <thead>
+                <tr>
+                    <th>Lab Test</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let labpre of Testprescription_Data">
+                    <td >{{labpre.testName}} </td>
+                    <td><button (click)="edit_test(labpre)"  class="btn btn-info">Generete Bill</button>&nbsp; </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="input-group mb-3" >
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">Low Range</span>
+        </div>            
+        <input type="text" name="testview.lowRange" id="testview.lowRange"  [(ngModel)]="testview.lowRange"  class="form-control" placeholder="Enter Low Range" aria-label="Course">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">High Range</span>
+        </div>             
+        <input type="text" name="testview.highRange" id="testview.highRange"  [(ngModel)]="testview.highRange"  class="form-control" placeholder="Enter Course" aria-label="Course">
+        
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">normalRange</span>
+        </div>              
+        <input type="text" name="testview.normalRange" id="testview.normalRange"  [(ngModel)]="testview.normalRange"  class="form-control" placeholder="Enter Course" aria-label="Course">
+        </div>   
+
+        <div class="input-group mb-3" >
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">unit</span>
+        </div>            
+        <input type="text" name="testview.unit" id="testview.unit"  [(ngModel)]="testview.unit"  class="form-control" placeholder="Enter Low Range" aria-label="Course">
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">High Range</span>
+        </div>             
+        <input type="date" name="testview.appliedDate" id="testview.appliedDate"  [(ngModel)]="testview.appliedDate"  class="form-control" placeholder="Enter Course" aria-label="Course">
+        
+        <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">testAmount</span>
+        </div>              
+        <input type="number" name="testview.testAmount" id="testview.testAmount"  [(ngModel)]="testview.testAmount"  class="form-control" placeholder="Enter Course" aria-label="Course">
+        <button (click)="Add_Test()"  class="btn btn-info" >ADD</button>
+    </div>   
+
+    </div>
+</div>
